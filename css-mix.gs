@@ -48,13 +48,8 @@ function convertToGoogleStyle(userStyleMap)
   return googleStyleMap;
 }
 
-function onOpen(e) {
-  body = DocumentApp.getActiveDocument().getBody();
-  var styleSheet = "h1 {color:#FAC941;} h2 {color:#8F6D0E;}";
-  userStyleMap = parseStyleSheet(styleSheet);
-  log(JSON.stringify(userStyleMap));
-  googleStyleMap = convertToGoogleStyle(userStyleMap);
-
+function applyStyleSheet(googleStyleMap)
+{
   var range = null;
   while(range = body.findElement(DocumentApp.ElementType.PARAGRAPH, range))
   {
@@ -71,12 +66,18 @@ function onOpen(e) {
         paragraph.setAttributes(googleStyleMap['h2']);
       break;
       default:break;
-    }
-
-    //log('while'); // create infinite loop
-    //element = range.getElement();
-    //log(element);
+    }    
   }
+
+}
+
+function onOpen(e) {
+  body = DocumentApp.getActiveDocument().getBody();
+  var styleSheet = "h1 {color:#FAC941;} h2 {color:#73DE95;}";
+  userStyleMap = parseStyleSheet(styleSheet);
+  log(JSON.stringify(userStyleMap));
+  googleStyleMap = convertToGoogleStyle(userStyleMap);
+  applyStyleSheet(googleStyleMap);
 }
 
 function log(message)
