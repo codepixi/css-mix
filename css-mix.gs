@@ -2,7 +2,7 @@ var body;
 function onOpen(e) {
   body = DocumentApp.getActiveDocument().getBody();
 
-  var styleSheet = "h1{color:blue;}";
+  var styleSheet = "h1{color:#0000ff;}";
   var cssDeclaration = new RegExp("([a-zA-Z0-9.#-]*){(.*)}"); // Syntax must have no space ! 
   
   splicedDeclaration =  cssDeclaration.exec(styleSheet);
@@ -18,8 +18,8 @@ function onOpen(e) {
     if(statements[position])
     {
       couple = statements[position].split(':');
-      styleTree[selector][position] = {};
-      styleTree[selector][position][couple[0]] = couple[1];
+      styleTree[selector] = {};
+      styleTree[selector][couple[0]] = couple[1];
     }
   }
   
@@ -34,7 +34,7 @@ function onOpen(e) {
   style[DocumentApp.Attribute.BOLD] = true;
 
   var styleHeading1 = Object.create(style);
-  styleHeading1[DocumentApp.Attribute.FOREGROUND_COLOR] = '#ff0000';
+  styleHeading1[DocumentApp.Attribute.FOREGROUND_COLOR] = styleTree['h1']['color'];
   var styleHeading2 = Object.create(style);
   styleHeading2[DocumentApp.Attribute.FOREGROUND_COLOR] = '#00ff00';
   
