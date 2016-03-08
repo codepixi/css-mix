@@ -71,9 +71,16 @@ function applyStyleSheet(googleStyleMap)
 
 }
 
+function askStyleSheet()
+{
+  //https://developers.google.com/apps-script/reference/base/prompt-response
+  var styleSheet = "h1 {color:#E08863;} h2 {color:#73DE95;}";
+  return styleSheet;
+}
+
 function onOpen(e) {
   body = DocumentApp.getActiveDocument().getBody();
-  var styleSheet = "h1 {color:#FAC941;} h2 {color:#73DE95;}";
+  styleSheet = askStyleSheet();
   userStyleMap = parseStyleSheet(styleSheet);
   log(JSON.stringify(userStyleMap));
   googleStyleMap = convertToGoogleStyle(userStyleMap);
