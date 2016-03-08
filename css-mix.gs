@@ -68,27 +68,56 @@ function applyStyleSheet(googleStyleMap)
       default:break;
     }    
   }
-
 }
 
+function prepareStyleEntry() 
+{
+  var cssForm = '<div>Please dont put endline at all.  Dont put spaces around the : </div><form><textarea style="width:240px;height:400px;"></textarea><div><input type="button" onclick="google.script.run.processStyleSheet()" value="Apply"/></div></form>';
+  var cssForm = HtmlService.createHtmlOutput(cssForm)
+      .setSandboxMode(HtmlService.SandboxMode.IFRAME)
+      .setTitle('Your CSS StyleSheet')
+      .setWidth(300);
+  DocumentApp.getUi().showSidebar(cssForm);
+  //onclick="google.script.host.close()"
+}
+
+//https://developers.google.com/apps-script/troubleshooting#common_errors
 function askStyleSheet()
 {
+  //getOAuthToken();
   //https://developers.google.com/apps-script/reference/base/prompt-response
-  var styleSheet = "h1 {color:#E08863;} h2 {color:#73DE95;}";
+  var styleSheet = "h1 {color:#E08863;} h2 {color:#F7B2CE;}";
+  //https://code.google.com/p/google-apps-script-issues/issues/detail?id=677
+  //var styleSheet = DocumentApp.getUi().prompt('Write your stylesheet within one line, no space around the : symbol').getResponseText();
   return styleSheet;
 }
 
-function onOpen(e) {
+function onOpen(e) 
+{
   body = DocumentApp.getActiveDocument().getBody();
+  //log(e.authMode);
+  prepareStyleEntry();
+}
+
+function processStyleSheet()
+{
+  //log("processStyleSheet");
   styleSheet = askStyleSheet();
+  //log(styleSheet);
   userStyleMap = parseStyleSheet(styleSheet);
-  log(JSON.stringify(userStyleMap));
+  //log(JSON.stringify(userStyleMap));
   googleStyleMap = convertToGoogleStyle(userStyleMap);
   applyStyleSheet(googleStyleMap);
 }
 
 function log(message)
 {
+    if(!body) body = DocumentApp.getActiveDocument().getBody();
     body.appendParagraph(message);
 }
 
+function getAuthentificationToken() 
+{
+  DriveApp.getRootFolder();
+  return ScriptApp.getOAuthToken();
+}
