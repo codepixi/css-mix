@@ -50,7 +50,8 @@ function convertToGoogleStyle(userStyleMap)
 
 function applyStyleSheet(googleStyleMap)
 {
-  var range = null;
+  var range = null;    
+  if(!body) body = DocumentApp.getActiveDocument().getBody();
   while(range = body.findElement(DocumentApp.ElementType.PARAGRAPH, range))
   {
     //range.getElement().asParagraph().setBold(true);
@@ -70,10 +71,11 @@ function applyStyleSheet(googleStyleMap)
   }
 }
 
+var cssForm;
 function prepareStyleEntry() 
 {
-  var cssForm = '<div>Please dont put endline at all.  Dont put spaces around the : </div><form><textarea style="width:240px;height:400px;"></textarea><div><input type="button" onclick="google.script.run.processStyleSheet()" value="Apply"/></div></form>';
-  var cssForm = HtmlService.createHtmlOutput(cssForm)
+  //https://developers.google.com/apps-script/guides/html/reference/run#methods
+  cssForm = HtmlService.createHtmlOutputFromFile('CssForm')
       .setSandboxMode(HtmlService.SandboxMode.IFRAME)
       .setTitle('Your CSS StyleSheet')
       .setWidth(300);
@@ -86,7 +88,7 @@ function askStyleSheet()
 {
   //getOAuthToken();
   //https://developers.google.com/apps-script/reference/base/prompt-response
-  var styleSheet = "h1 {color:#E08863;} h2 {color:#F7B2CE;}";
+  var styleSheet = "h1 {color:#817DF5;} h2 {color:#F7B2CE;}";
   //https://code.google.com/p/google-apps-script-issues/issues/detail?id=677
   //var styleSheet = DocumentApp.getUi().prompt('Write your stylesheet within one line, no space around the : symbol').getResponseText();
   return styleSheet;
