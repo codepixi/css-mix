@@ -2,23 +2,30 @@ var body;
 
 function parseStyleSheet(styleSheet)
 {
-  var cssDeclaration = new RegExp("([a-zA-Z0-9.#-]*){(.*)}"); // Syntax must have no space ! 
-  
-  splicedDeclaration =  cssDeclaration.exec(styleSheet);
-  selector = splicedDeclaration[1];
-  //log("selector" + selector);
-  //log("statement list" + splicedDeclaration[2]);
+  var userDeclarationList = styleSheet.split('}');
+  var declarationSyntax = new RegExp("([a-zA-Z0-9.#-]*) *{( *[^ ]* *)}");
   var userStyleMap = {};
-  userStyleMap[selector] = {};
-  statements = splicedDeclaration[2].split(';');
-  for(position in statements)
+  
+  for(position in userDeclarationList)
   {
-    //log('-' + statements[position] + '-');
-    if(statements[position])
+    userDeclaration = userDeclarationList[position] + '}';
+    if(userDeclaration == '}') break;
+    //log('userDeclaration ' + userDeclaration);
+    splicedDeclaration =  declarationSyntax.exec(userDeclaration);
+    selector = splicedDeclaration[1];
+    //log("selector " + selector);
+    //log("statement list " + splicedDeclaration[2]);
+    userStyleMap[selector] = {};
+    statements = splicedDeclaration[2].split(';');
+    for(position in statements)
     {
-      couple = statements[position].split(':');
-      userStyleMap[selector] = {};
-      userStyleMap[selector][couple[0]] = couple[1];
+      //log('-' + statements[position] + '-');
+      if(statements[position])
+      {
+        couple = statements[position].split(':');
+        userStyleMap[selector] = {};
+        userStyleMap[selector][couple[0]] = couple[1];
+      }
     }
   }
   return userStyleMap;
@@ -36,12 +43,14 @@ function convertToGoogleStyle(userStyleMap)
   googleStyleMap = {};
   googleStyleMap['h1'] = Object.create(style);
   googleStyleMap['h1'][DocumentApp.Attribute.FOREGROUND_COLOR] = userStyleMap['h1']['color'];
+  googleStyleMap['h2'] = Object.create(style);
+  googleStyleMap['h2'][DocumentApp.Attribute.FOREGROUND_COLOR] = userStyleMap['h2']['color'];
   return googleStyleMap;
 }
 
 function onOpen(e) {
   body = DocumentApp.getActiveDocument().getBody();
-  var styleSheet = "h1{color:#F0C9CB;}";
+  var styleSheet = "h1 {color:#FAC941;} h2 {color:#8F6D0E;}";
   userStyleMap = parseStyleSheet(styleSheet);
   log(JSON.stringify(userStyleMap));
   googleStyleMap = convertToGoogleStyle(userStyleMap);
@@ -59,7 +68,7 @@ function onOpen(e) {
         paragraph.setAttributes(googleStyleMap['h1']);
       break;
       case DocumentApp.ParagraphHeading.HEADING2: 
-        //paragraph.setAttributes(styleHeading2);
+        paragraph.setAttributes(googleStyleMap['h2']);
       break;
       default:break;
     }
