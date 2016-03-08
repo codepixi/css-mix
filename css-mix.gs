@@ -99,12 +99,13 @@ function onOpen(e)
   body = DocumentApp.getActiveDocument().getBody();
   //log(e.authMode);
   prepareStyleEntry();
+  //styleSheet = askStyleSheet();
+  //processStyleSheet(styleSheet);
 }
 
-function processStyleSheet()
+function processStyleSheet(styleSheet)
 {
   //log("processStyleSheet");
-  styleSheet = askStyleSheet();
   //log(styleSheet);
   userStyleMap = parseStyleSheet(styleSheet);
   //log(JSON.stringify(userStyleMap));
@@ -116,10 +117,4 @@ function log(message)
 {
     if(!body) body = DocumentApp.getActiveDocument().getBody();
     body.appendParagraph(message);
-}
-
-function getAuthentificationToken() 
-{
-  DriveApp.getRootFolder();
-  return ScriptApp.getOAuthToken();
 }

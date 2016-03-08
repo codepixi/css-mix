@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+  function submitCssForm()
+  {
+    //var styleSheet = "h1 {color:#83F26D;} h2 {color:#F7B2CE;}";
+    var styleSheet = document.getElementById("stylesheet").value;
+    //alert(styleSheet);
+    //google.script.run.log(styleSheet);
+    google.script.run.processStyleSheet(styleSheet);
+  }
+</script>
+</head>
+<body>
+  <div>Please dont put endline at all.  Dont put spaces around the : </div>
+  
+  <form>
+  <textarea id="stylesheet" style="width:240px;height:400px;">h1 {color:#83F26D;} h2 {color:#F7B2CE;}</textarea>
+  <div><input type="button" onclick="submitCssForm()" value="Apply this CSS Sheet"/></div>
+  </form>
+
+  <!--script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script-->
+</body>
+</html>
