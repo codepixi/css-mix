@@ -1,11 +1,30 @@
 var body;
 function onOpen(e) {
-
   body = DocumentApp.getActiveDocument().getBody();
-  //Browser.msgBox("body");
-  log('coucou');
-  //var test = body.getChild(0);
-  //log(test.getType());
+
+  var styleSheet = "h1{color:blue;}";
+  var cssDeclaration = new RegExp("([a-zA-Z0-9.#-]*){(.*)}"); // Syntax must have no space ! 
+  
+  splicedDeclaration =  cssDeclaration.exec(styleSheet);
+  selector = splicedDeclaration[1];
+  //log("selector" + selector);
+  //log("statement list" + splicedDeclaration[2]);
+  var styleTree = {};
+  styleTree[selector] = {};
+  statements = splicedDeclaration[2].split(';');
+  for(position in statements)
+  {
+    //log('-' + statements[position] + '-');
+    if(statements[position])
+    {
+      couple = statements[position].split(':');
+      styleTree[selector][position] = {};
+      styleTree[selector][position][couple[0]] = couple[1];
+    }
+  }
+  
+  log(JSON.stringify(styleTree));
+
 
   // https://developers.google.com/apps-script/reference/document/paragraph#setattributesattributes
   var style = {};
