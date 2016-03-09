@@ -31,9 +31,9 @@ function parseStyleSheet(styleSheet)
   return userStyleMap;
 }
 
-var style = {};
+var style = {}; // below potential default values or to apply with *
 //style[DocumentApp.Attribute.HORIZONTAL_ALIGNMENT] = DocumentApp.HorizontalAlignment.RIGHT;
-style[DocumentApp.Attribute.FONT_FAMILY] = 'Calibri';
+//style[DocumentApp.Attribute.FONT_FAMILY] = 'Calibri';
 //style[DocumentApp.Attribute.FONT_SIZE] = 18;
 //style[DocumentApp.Attribute.BOLD] = true;
 
@@ -42,15 +42,16 @@ function convertToGoogleStyle(userStyleList)
 {
   var styleMap = {};
   styleMap['color'] = DocumentApp.Attribute.FOREGROUND_COLOR;
-
-  googleStyleList = {};
   
-  googleStyleList['h1'] = Object.create(style);
-  googleStyleList['h1'][DocumentApp.Attribute.FOREGROUND_COLOR] = userStyleList['h1']['color'];
-  googleStyleList['h2'] = Object.create(style);
-  googleStyleList['h2'][DocumentApp.Attribute.FOREGROUND_COLOR] = userStyleList['h2']['color'];
-  googleStyleList['h3'] = Object.create(style);
-  googleStyleList['h3'][DocumentApp.Attribute.FOREGROUND_COLOR] = userStyleList['h3']['color'];
+  googleStyleList = {};
+  for(tag in userStyleList)
+  {
+    googleStyleList[tag] = Object.create(style);
+    for(attribute in userStyleList[tag]) // TODO: use an autorized list
+    {
+      googleStyleList[tag][styleMap[attribute]] = userStyleList[tag][attribute];
+    }
+  }
   return googleStyleList;
 }
 
