@@ -42,6 +42,7 @@ function convertToGoogleStyle(userStyleList)
 {
   var styleMap = {};
   styleMap['color'] = DocumentApp.Attribute.FOREGROUND_COLOR;
+  styleMap['background-color'] = DocumentApp.Attribute.BACKGROUND_COLOR;
   
   googleStyleList = {};
   for(tag in userStyleList)
@@ -70,7 +71,7 @@ function applyStyleSheet(googleStyleMap)
   while(range = body.findElement(DocumentApp.ElementType.PARAGRAPH, range))
   {
     paragraph = range.getElement().asParagraph();
-    Logger.log(paragraph.getHeading());
+    //Logger.log(paragraph.getHeading());
     style = googleStyleMap[selectorMap[paragraph.getHeading()]];
     if(style) {paragraph.setAttributes(style);}
   }

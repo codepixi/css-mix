@@ -1,0 +1,1 @@
+CSS-Mix is a toolkit for using CSS syntax in many context.  This particular add-on apply a stylesheet to your Google Doc.  Tag supported are h1, h2, h3 and p.  The attributes supported are color and background-color.

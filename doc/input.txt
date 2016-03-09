@@ -1,0 +1,4 @@
+h1 {color:#FAA12D;} 
+h2 {color:#1FE039;}
+h3 {color:#3F95EB;}
+p {color:#A8D5ED;}
