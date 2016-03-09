@@ -38,42 +38,42 @@ style[DocumentApp.Attribute.FONT_FAMILY] = 'Calibri';
 //style[DocumentApp.Attribute.BOLD] = true;
 
 // https://developers.google.com/apps-script/reference/document/paragraph#setattributesattributes
-function convertToGoogleStyle(userStyleMap)
+function convertToGoogleStyle(userStyleList)
 {
-  googleStyleMap = {};
-  googleStyleMap['h1'] = Object.create(style);
-  googleStyleMap['h1'][DocumentApp.Attribute.FOREGROUND_COLOR] = userStyleMap['h1']['color'];
-  googleStyleMap['h2'] = Object.create(style);
-  googleStyleMap['h2'][DocumentApp.Attribute.FOREGROUND_COLOR] = userStyleMap['h2']['color'];
-  googleStyleMap['h3'] = Object.create(style);
-  googleStyleMap['h3'][DocumentApp.Attribute.FOREGROUND_COLOR] = userStyleMap['h3']['color'];
-  return googleStyleMap;
+  var styleMap = {};
+  styleMap['color'] = DocumentApp.Attribute.FOREGROUND_COLOR;
+
+  googleStyleList = {};
+  
+  googleStyleList['h1'] = Object.create(style);
+  googleStyleList['h1'][DocumentApp.Attribute.FOREGROUND_COLOR] = userStyleList['h1']['color'];
+  googleStyleList['h2'] = Object.create(style);
+  googleStyleList['h2'][DocumentApp.Attribute.FOREGROUND_COLOR] = userStyleList['h2']['color'];
+  googleStyleList['h3'] = Object.create(style);
+  googleStyleList['h3'][DocumentApp.Attribute.FOREGROUND_COLOR] = userStyleList['h3']['color'];
+  return googleStyleList;
 }
 
 function applyStyleSheet(googleStyleMap)
 {
+  // https://developers.google.com/apps-script/reference/document/paragraph-heading
+  var selectorMap = {};
+  selectorMap[DocumentApp.ParagraphHeading.HEADING1] = 'h1';
+  selectorMap[DocumentApp.ParagraphHeading.HEADING2] = 'h2';
+  selectorMap[DocumentApp.ParagraphHeading.HEADING3] = 'h3';
+  selectorMap[DocumentApp.ParagraphHeading.NORMAL] = 'p';
+  
   var range = null;    
   if(!body) body = DocumentApp.getActiveDocument().getBody();
+  var test = '';
   while(range = body.findElement(DocumentApp.ElementType.PARAGRAPH, range))
   {
-    //range.getElement().asParagraph().setBold(true);
     paragraph = range.getElement().asParagraph();
     Logger.log(paragraph.getHeading());
-    // https://developers.google.com/apps-script/reference/document/paragraph-heading
-    switch(paragraph.getHeading())
-    {
-      case DocumentApp.ParagraphHeading.HEADING1: 
-        paragraph.setAttributes(googleStyleMap['h1']);
-      break;
-      case DocumentApp.ParagraphHeading.HEADING2: 
-        paragraph.setAttributes(googleStyleMap['h2']);
-      break;
-      case DocumentApp.ParagraphHeading.HEADING3: 
-        paragraph.setAttributes(googleStyleMap['h3']);
-      break;
-      default:break;
-    }    
+    style = googleStyleMap[selectorMap[paragraph.getHeading()]];
+    if(style) {paragraph.setAttributes(style);}
   }
+  log(test);
 }
 
 var cssForm;
