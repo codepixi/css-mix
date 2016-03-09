@@ -45,6 +45,8 @@ function convertToGoogleStyle(userStyleMap)
   googleStyleMap['h1'][DocumentApp.Attribute.FOREGROUND_COLOR] = userStyleMap['h1']['color'];
   googleStyleMap['h2'] = Object.create(style);
   googleStyleMap['h2'][DocumentApp.Attribute.FOREGROUND_COLOR] = userStyleMap['h2']['color'];
+  googleStyleMap['h3'] = Object.create(style);
+  googleStyleMap['h3'][DocumentApp.Attribute.FOREGROUND_COLOR] = userStyleMap['h3']['color'];
   return googleStyleMap;
 }
 
@@ -65,6 +67,9 @@ function applyStyleSheet(googleStyleMap)
       break;
       case DocumentApp.ParagraphHeading.HEADING2: 
         paragraph.setAttributes(googleStyleMap['h2']);
+      break;
+      case DocumentApp.ParagraphHeading.HEADING3: 
+        paragraph.setAttributes(googleStyleMap['h3']);
       break;
       default:break;
     }    
@@ -107,6 +112,7 @@ function processStyleSheet(styleSheet)
 {
   //log("processStyleSheet");
   //log(styleSheet);
+  styleSheet = styleSheet.replace(/(?:\r\n|\r|\n)/g, '');
   userStyleMap = parseStyleSheet(styleSheet);
   //log(JSON.stringify(userStyleMap));
   googleStyleMap = convertToGoogleStyle(userStyleMap);
