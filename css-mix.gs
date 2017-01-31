@@ -101,13 +101,20 @@ function askStyleSheet()
   return styleSheet;
 }
 
-function onOpen(e) 
+function onOpen(e)
 {
-  body = DocumentApp.getActiveDocument().getBody();
-  //log(e.authMode);
-  prepareStyleEntry();
-  //styleSheet = askStyleSheet();
-  //processStyleSheet(styleSheet);
+	menu = DocumentApp.getUi().createMenu('CSS Mix');
+	menu.addItem('Open your CSS', 'openStyleSheet').addToUi();
+	//menu.addItem('Save your CSS', 'saveStyleSheet').addToUi();
+}
+
+function openStyleSheet()
+{
+	body = DocumentApp.getActiveDocument().getBody();
+	//log(e.authMode);
+	prepareStyleEntry();
+	//styleSheet = askStyleSheet();
+	//processStyleSheet(styleSheet);
 }
 
 function processStyleSheet(styleSheet)
