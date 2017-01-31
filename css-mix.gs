@@ -110,6 +110,17 @@ function onOpen(e)
 
 function openStyleSheet()
 {
+  ui = DocumentApp.getUi();
+  ui.alert(
+     'Thank you',
+     'Thank you to install CSS-Mix.\n'+
+     'CSS Mix is a great tool for uniformizing many documents within a serie.\n' +
+     'CSS lovers will like to be able to use this alternate way to style as Google Doc.\n' +
+     '\n' +
+     'Click on the Open menu to edit you very first stylesheet.\n' +
+     'Change the values within the stylesheet and click on the Apply button.',
+      ui.ButtonSet.OK);
+  
 	body = DocumentApp.getActiveDocument().getBody();
 	//log(e.authMode);
 	prepareStyleEntry();
@@ -133,3 +144,4 @@ function log(message)
     if(!body) body = DocumentApp.getActiveDocument().getBody();
     body.appendParagraph(message);
 }
+
