@@ -108,7 +108,7 @@ function onOpen(e)
 	//menu.addItem('Save your CSS', 'saveStyleSheet').addToUi();
 }
 
-function openStyleSheet()
+function onInstall(e)
 {
   ui = DocumentApp.getUi();
   ui.alert(
@@ -120,7 +120,11 @@ function openStyleSheet()
      'Click on the Open menu to edit you very first stylesheet.\n' +
      'Change the values within the stylesheet and click on the Apply button.',
       ui.ButtonSet.OK);
-  
+}
+
+
+function openStyleSheet()
+{  
 	body = DocumentApp.getActiveDocument().getBody();
 	//log(e.authMode);
 	prepareStyleEntry();
